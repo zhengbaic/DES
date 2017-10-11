@@ -129,7 +129,7 @@ bitset<64> string_2_bitsets(const char string[8]) {
 	bitset<64> bitsets;
 	for (int i = 0; i < 8; i++) 
 		for (int j = 0; j < 8; j++) 
-			bitsets[i * 8 + j] = ((s[i] >> j) & 1);
+			bitsets[i * 8 + j] = ((string[i] >> j) & 1);
 	return bitsets;
 }
 
@@ -148,7 +148,7 @@ bitset<32> feistel(bitset<32> right, bitset<48> k) {
         int row = E_extend[i * 6 + 0] * 2 + E_extend[i * 6 + 5];
         int col = E_extend[i * 6 + 1] * 8 + E_extend[i * 6 + 2] * 4
                   + E_extend[i * 6 + 3] * 2 + E_extend[i * 6 + 4];
-        int value = this->SBox[i][row][col];
+        int value = Sbox[i][row][col];
         for (int j = 0; j < 4; j++) {
             result[i * 4 + 3 - j] = value % 2;
             value /= 2;
@@ -165,7 +165,7 @@ bitset<32> feistel(bitset<32> right, bitset<48> k) {
 bitset<28> shift_key(bitset<28> key, int num) {
 	bitset<28> temp = key;
 	for (int i = 0; i < 28; i++) {
-		if (i - shift < 0) key[i] = temp[i - num + 28];
+		if (i - num < 0) key[i] = temp[i - num + 28];
 		else key[i] = temp[i - num];
 	}
 	return key;
@@ -173,7 +173,7 @@ bitset<28> shift_key(bitset<28> key, int num) {
 
 vector<bitset<48> > generate_k_keys(bitset<64> key) {
 	bitset<48> Kkey;
-	vector<bitset<48>> Kkeys;
+	vector<bitset<48> > Kkeys;
 	bitset<56> PC1Key;
 	bitset<28> left;
 	bitset<28> right;
@@ -199,7 +199,7 @@ vector<bitset<48> > generate_k_keys(bitset<64> key) {
 		}
 		
 		for (int j = 0; j < 28; i++) {
-			PC1Key[j] = leftP[j];
+			PC1Key[j] = left[j];
 		}
 		for (int j = 28; j < 56; j++) {
 			PC1Key[j] = right[j - 28];
